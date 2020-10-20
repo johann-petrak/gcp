@@ -566,7 +566,7 @@ public class BatchRunner {
     options.addOption("C", "cache", true, "Maven cache directory to use when resolving plugins (optional, and may be specified more than once)");
     options.addOption("p", "plugin", true, "GATE plugin to pre-load. Values of the form groupId:artifactId:version are treated as Maven plugins, anything else is tried first as a URL and if that fails then as a path relative to the GCP working directory (optional, and may be specified more than once)");
     options.addOption("i", "inputDirectoryOrFile", true, "Input directory or file listing document IDs (required, unless -b given)");
-    options.addOption("f", "outputFormat", true, "Output format, optional, one of 'xml'|'gatexml', 'finf', 'ser', 'json', 'bdocjson', default is 'finf'");
+    options.addOption("f", "outputFormat", true, "Output format, optional, one of 'xml'/'gatexml', 'finf', 'ser', 'json', 'bdocjs', 'bdocym', 'bdocmp', default is 'finf'");
     options.addOption("o", "outputDirectory", true, "Output directory (not output if missing)");
     options.addOption("x", "executePipeline", true, "Pipeline/application file to execute (required, unless -b given)");
     options.addOption("r", "reportFile", true, "Report file (optional, default: report.xml");
@@ -624,8 +624,9 @@ public class BatchRunner {
         outFormat = line.getOptionValue('f');
         if(!outFormat.equals("xml") && !outFormat.equals("finf") &&
                 !outFormat.equals("gatexml") &&
-                !outFormat.equals("ser") && !outFormat.equals("json")) {
-          log.error("Output format (option 'f') must be either 'json', 'ser', xml' or 'finf'");
+                !outFormat.equals("ser") && !outFormat.equals("json") &&
+                !outFormat.equals("bdocjs") && !outFormat.equals("bdocym") && !outFormat.equals("bdocmp")) {
+          log.error("Output format (option 'f') must be one of: 'json', 'ser', xml', 'finf', 'bdocjs', 'bdocym', 'bdocmp'");
           System.exit(1);
         }
       } // if we have option 'f', otherwise use the preset default
@@ -838,9 +839,15 @@ public class BatchRunner {
             } else if(outFormat.equals("ser")) {
               outExt = ".ser";
               outputHandlerClassName = "gate.cloud.io.file.SerializedObjectOutputHandler";
-            } else if(outFormat.equals("bdocjson")) {
-              outExt = ".bdocjson";
+            } else if(outFormat.equals("bdocjs")) {
+              outExt = ".bdocjs";
               outputHandlerClassName = "gate.plugin.format.bdoc.gcp.BdocJsonOutputHandler";
+            } else if(outFormat.equals("bdocym")) {
+              outExt = ".bdocym";
+              outputHandlerClassName = "gate.plugin.format.bdoc.gcp.BdocYamlOutputHandler";
+            } else if(outFormat.equals("bdocmp")) {
+              outExt = ".bdocmp";
+              outputHandlerClassName = "gate.plugin.format.bdoc.gcp.BdocMsgPackOutputHandler";
             } else if(outFormat.equals("json")) {
               outExt = ".json";
               outputHandlerClassName = "gate.cloud.io.file.JSONOutputHandler";
