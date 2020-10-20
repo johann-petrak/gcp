@@ -122,11 +122,13 @@ parameters using command line options to \verb!gcp-direct.sh!:
 \bde
 \item[-t] the number of parallel threads to use.
 \item[-x] the path to the saved GATE application that you want to run.
-\item[-f] the output format to use for saving results, must be either ``xml''
-  (GATE XML format) or ``finf'' (FastInfoset format).  To use FastInfoset the
+\item[-f] \sloppy the output format to use for saving results, must be one of the following:
+	``xml'' (GATE XML format), ``finf'' (FastInfoset format), ``bdocjs` (Bdoc JSON),
+	``bdocym` (Bdoc YAML), ``bdocmp`` (Bdoc MessagePack), ``json``. 
+  To use FastInfoset format the
   GATE \verb!Format: FastInfoset! plugin must be loaded by the saved
   application or by using \verb!-p uk.ac.gate.plugins:format-fastinfoset:8.5!
-  (see below).
+  (see below), similarly,  for the Bdoc-formats the \verb!Format_Bdoc! plugin.
 \item[-i] the directory in which to look for the input files or a file that contains
   relative path names to the input files. If this points to a directory, all files in
   this directory and any subdirectories will be processed (except for standard
